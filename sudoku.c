@@ -8,8 +8,12 @@
 
 void print_table(int table [9][9]);
 bool can_fit(int x, int y, int n);
+bool can_fit_column(int x, int y, int n);
+bool can_fit_row(int x, int y, int n);
+bool can_fit_square(int x, int y, int n);
 bool solve();
-void read_table(FILE *fp);
+void create();
+bool read_table(FILE *fp);
 bool is_full(int table [9][9]);
 
 /* Global variables */
@@ -32,6 +36,9 @@ TODO: Maybe make a struct that will hold our 2D array?
 This will make it easier to return from methods
 because you can't easily return 2D arrays from methods
 */
+typedef struct sudoku{
+    int board[9][9];
+} sudoku_t;
 
 int main(int argc, char *argv[]){
     if (argc != 2){
@@ -39,57 +46,38 @@ int main(int argc, char *argv[]){
         return 0;
     }
 
-    
-    //print_table(arr);
+    if (strcmp("create", argv[1]) == 0) {
+        printf("create:\n");
 
-    solve();
-    print_table(arr);
+        FILE* fp = fopen("exampleSudoku", "r");
+        read_table(fp);
+        fclose(fp);
 
-    //read_table(stdin);
-    //printf("table:\n");
-    //print_table(empty);
-    printf("\n");
-
-    return 0;
-
-}
-
-
-void print_table(int table [9][9]){
-    int i,j;
-    for(i = 0; i < 9; i++){
-        for(j = 0; j < 9; j++){
-            printf("%d ", table[i][j]);
-        }
+        printf("table:\n");
+        print_table(empty);
         printf("\n");
     }
-}
 
-bool can_fit(int x, int y, int n){
-    for (int i = 0; i < 9; i++) {
-        if (arr[x][i] == n){
-            return false;
-        }
+    else if (strcmp("solve", argv[1]) == 0) {
+        
     }
-    
-    for(int i = 0; i < 9; i++){
-        if (arr[i][y] == n){
-            return false; 
-        }
-    }
-    
 
-    int xval = (x / 3) * 3;
-    int yval = (y / 3) * 3;
-    for (int i = 0; i < 3; i++){
-        for (int j = 0; j < 3; j++){
-            if (arr[xval + i][yval + j] == n){
-                return false;
-            }
-        }
+    else {
+        fprintf(stderr, "Usage: \nsudoku create\nor\nsudoku solve\n");
+        return 1;
     }
-    
-    return true;
+    // could probably delete
+    //print_table(arr);
+
+    //solve();
+    // print_table(arr);
+
+    // read_table(stdin);
+    // printf("table:\n");
+    // print_table(empty);
+    // printf("\n");
+
+    return 0;
 }
 
 bool solve(){
@@ -116,18 +104,65 @@ bool solve(){
     return false;
 }
 
-void read_table(FILE *fp){
+void print_table(int table [9][9]){
+    int i,j;
+    for(i = 0; i < 9; i++){
+        for(j = 0; j < 9; j++){
+            printf("%d ", table[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+bool read_table(FILE *fp){
     for (int i = 0; i < 9; i++){
         for (int j = 0; j < 9; j++){
             int d;
-            if (fscanf(fp, " %d", &d) != 1){
+            if (fscanf(fp, "%d ", &d) != 1){
                 fprintf(stderr, "invalid value");
+                return false;
             }
             else{
                 empty[i][j] = d;
             }
         }
     }
+    return true;
+}
+
+bool can_fit_column(int x, int y, int n){
+    for (int i = 0; i < 9; i++) {
+        if (arr[x][i] == n){
+            return false;
+        }
+    }
+    return true;
+}
+
+bool can_fit_row(int x, int y, int n){
+    for(int i = 0; i < 9; i++){
+        if (arr[i][y] == n){
+            return false; 
+        }
+    }
+    return true;
+}
+
+bool can_fit_square(int x, int y, int n){
+    int xval = (x / 3) * 3;
+    int yval = (y / 3) * 3;
+    for (int i = 0; i < 3; i++){
+        for (int j = 0; j < 3; j++){
+            if (arr[xval + i][yval + j] == n){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool can_fit(int x, int y, int n){
+    return can_fit_column(x, y, n) && can_fit_row(x, y, n) && can_fit_square(x, y, n);
 }
 
 bool is_full(int table [9][9]){
