@@ -25,3 +25,4 @@ clean:
 	rm -rf *.o
 	rm -rf $(PROG)
 	rm -rf *.dSYM
+	rm -rf *core*
