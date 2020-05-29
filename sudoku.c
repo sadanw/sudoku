@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include "sudoku.h"
 
 /* Function headers */
 
@@ -73,17 +74,15 @@ bool can_fit(int x, int y, int n){
     
     for(int i = 0; i < 9; i++){
         if (arr[i][y] == n){
-            return false;
+            return false; 
         }
     }
     
-    printf("recieved (%d, %d)\n", x, y);
 
     int xval = (x / 3) * 3;
     int yval = (y / 3) * 3;
     for (int i = 0; i < 3; i++){
         for (int j = 0; j < 3; j++){
-            printf("Checking if arr[%d][%d] == %d\n", xval + i, yval + j, n);
             if (arr[xval + i][yval + j] == n){
                 return false;
             }
