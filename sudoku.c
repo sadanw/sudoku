@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <time.h>
 #include "sudoku.h"
+#include "create.h"
+#include "solve.h"
 
 /* Global types */
 
@@ -24,12 +26,17 @@ bool can_fit_column(sudoku_t* sudo, int x, int y, int n);
 bool can_fit_row(sudoku_t* sudo, int x, int y, int n);
 bool can_fit_square(sudoku_t* sudo, int x, int y, int n);
 void shuffle(int *array, size_t n);
+int testfunc();
 
 /*
 TODO: in create(), make sure that the board it creates has a unique solution
 */
 
 int main(int argc, char *argv[]){
+    #ifdef MYTEST
+    testfunc();
+    #endif
+    
     if (argc != 2){
         fprintf(stderr, "Incorrect number of parameters\nUsage: \nsudoku create\nor\nsudoku solve\n");
         return 0;
@@ -253,3 +260,67 @@ void shuffle(int *array, size_t n){
         }
     }
 }
+
+#ifdef MYTEST
+int fullgrid[9][9] = {
+{1, 2, 5, 6, 7, 9, 8, 3, 5},
+{1, 1, 1, 1, 1, 1, 1, 1, 1},
+{1, 1, 1, 1, 1, 1, 1, 1, 1},
+{1, 1, 1, 1, 1, 1, 1, 1, 1},
+{1, 1, 1, 1, 1, 1, 1, 1, 1},
+{1, 1, 1, 1, 1, 1, 1, 1, 1},
+{1, 1, 1, 1, 1, 1, 1, 1, 1},
+{1, 1, 1, 1, 1, 1, 1, 1, 1},
+{1, 1, 1, 1, 1, 1, 1, 1, 1},
+};
+
+int partialgrid[9][9] = {
+{0, 0, 0, 0, 6, 5, 2, 0, 0},
+{6, 0, 5, 0, 0, 2, 0, 7, 3},
+{2, 0, 0, 3, 0, 0, 6, 0, 4},
+{0, 0, 0, 0, 5, 0, 8, 0, 0},
+{8, 2, 7, 0, 4, 0, 5, 1, 9},
+{0, 0, 3, 0, 7, 0, 0, 0, 0},
+{9, 0, 2, 0, 0, 6, 0, 0, 5},
+{7, 6, 0, 5, 0, 0, 3, 0, 8},
+{0, 0, 1, 8, 2, 0, 0, 0, 0},
+};
+
+int testfunc(){
+    sudoku_t* sudobf = malloc(sizeof(sudoku_t));
+    for (int i = 0; i < 9; i++){
+        for (int j = 0; j < 9; j++){
+            sudobf->board[i][j] = fullgrid[i][j];
+        }
+    }
+    fprintf(stdout, "%d\n", is_full(sudobf));
+
+    for (int i = 0; i < 9; i++){
+        for (int j = 0; j < 9; j++){
+            sudobf->board[i][j] = partialgrid[i][j];
+        }
+    }
+    fprintf(stdout, "%d\n", is_full(sudobf));
+
+    fprintf(stdout, "%d\n", can_fit_row(sudobf, 0, 0, 4));
+    fprintf(stdout, "%d\n", can_fit_row(sudobf, 4, 4, 4));
+    fprintf(stdout, "%d\n", can_fit_column(sudobf, 5, 1, 6));
+    fprintf(stdout, "%d\n", can_fit_square(sudobf, 0, 0, 5));
+
+    fprintf(stdout, "%d\n", can_fit(sudobf, 0, 0, 1));
+    fprintf(stdout, "%d\n", can_fit(sudobf, 6, 1, 5));
+
+    sudoku_t *sudocr = create();
+    print_board(sudocr);
+
+    fprintf(stdout, "-- -- -- --\n");
+    
+    solve(sudocr);
+    print_board(sudocr);
+
+
+    return 0;
+}
+
+
+#endif

@@ -1,11 +1,14 @@
 #variables
 
 CC = gcc
-CFLAGS = -Wall -pedantic -std=c11 -ggdb
+CFLAGS = -Wall -pedantic -std=c11 -ggdb $(UNITTEST)
 MAKE = make
 PROG = sudoku
 
 OBJS = sudoku.o
+
+# testing
+UNITTEST = -D MYTEST
 
 
 #rules
@@ -19,6 +22,9 @@ solve:
 
 create:
 	./$(PROG) create
+
+# dependencies
+sudoku.o: solve.h create.h
 
 # clean up after our compilation
 clean:
