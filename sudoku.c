@@ -12,6 +12,18 @@ typedef struct sudoku{
 } sudoku_t;
 
 /* Function headers */
+sudoku_t* create();
+void fill_square(sudoku_t* sudo, int x, int y);
+bool fill_board(sudoku_t* sudo);
+void remove_num(sudoku_t* sudo, int num);
+bool solve(sudoku_t* sudo);
+sudoku_t* load_board(FILE *fp);
+bool is_full(sudoku_t* sudo);
+bool can_fit(sudoku_t* sudo, int x, int y, int n);
+bool can_fit_column(sudoku_t* sudo, int x, int y, int n);
+bool can_fit_row(sudoku_t* sudo, int x, int y, int n);
+bool can_fit_square(sudoku_t* sudo, int x, int y, int n);
+void shuffle(int *array, size_t n);
 
 /*
 TODO: in create(), make sure that the board it creates has a unique solution
@@ -66,6 +78,7 @@ sudoku_t* create() {
     remove_num(new, 40);
 
     return new;
+
 }
 
 /* x, y pair is upper left coordinate of square */
@@ -121,14 +134,18 @@ void remove_num(sudoku_t* sudo, int num) {
         if (sudo->board[x][y] != 0) {
             sudo->board[x][y] = 0;
             i++; // iterate i only if we changed a value
+            
         }
     }
+
+    return;
 }
 
 bool solve(sudoku_t* sudo){
     if (is_full(sudo)){
         return true;
     }
+
 
     for (int x = 0; x < 9; x++){
         for (int y = 0; y < 9; y++){
