@@ -27,6 +27,7 @@ bool can_fit_row(sudoku_t* sudo, int x, int y, int n);
 bool can_fit_square(sudoku_t* sudo, int x, int y, int n);
 void shuffle(int *array, size_t n);
 int testfunc();
+int uni_solve(sudoku_t* sudo, int sol);
 
 /*
 TODO: in create(), make sure that the board it creates has a unique solution
@@ -84,6 +85,23 @@ sudoku_t* create() {
     // remove values
     remove_num(new, 40);
 
+
+    // checking for unique solution here
+    sudoku_t* check = malloc(sizeof(sudoku_t));
+    for (int i = 0; i < 9; i++){
+        for (int j = 0; j < 9; j++){
+            check->board[i][j] = new->board[i][j];
+        }
+    }
+    
+    // if more than one solution, try again
+    if (uni_solve(check, 0) > 1){
+        return create();
+    }
+
+    free(check);
+
+    // return created board
     return new;
 
 }
@@ -171,6 +189,35 @@ bool solve(sudoku_t* sudo){
         }
     }
     return false;
+}
+
+// check for unique solution
+int uni_solve(sudoku_t* sudo, int sol){
+    if (is_full(sudo)){
+        sol += 1;
+        return sol;
+    }
+
+
+    for (int x = 0; x < 9; x++){
+        for (int y = 0; y < 9; y++){
+            if (sudo->board[x][y] == 0){
+                for (int n = 1; n <= 9; n++) { 
+                    if (can_fit(sudo, x, y, n)) { 
+                        sudo->board[x][y] = n; 
+                        sol = uni_solve(sudo, sol);
+                        sudo->board[x][y] = 0; 
+                    } 
+
+                    if (sol > 1){
+                        return sol;
+                    }
+                } 
+                return sol; 
+            }
+        }
+    }
+    return sol;
 }
 
 void print_board(sudoku_t* sudo){
