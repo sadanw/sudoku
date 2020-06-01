@@ -96,6 +96,7 @@ sudoku_t* create() {
     
     // if more than one solution, try again
     if (uni_solve(check, 0) > 1){
+        free(check);
         return create();
     }
 

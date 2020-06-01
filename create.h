@@ -23,15 +23,14 @@
  * sudoku table. 
  *
  * Caller provides: 
- *      a sudoku*.
+ *      nothing
  * We return:
- *      nothing, but the given sudoku struct has been initialized with valid 
- *      values. 
+ *      a sudoku_t pointer
  * Caller is responsible for:
  *      later calling sudoku_delete in order to free the memory associated with
- *      the newly initializes sudoku*.
+ *      the newly initialized sudoku*.
  */
-void create(sudoku_t *sudoku);
+sudoku_t* create();
 
 #endif // __CREATE_H
 
