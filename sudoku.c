@@ -29,10 +29,6 @@ void shuffle(int *array, size_t n);
 int testfunc();
 int uni_solve(sudoku_t* sudo, int sol);
 
-/*
-TODO: in create(), make sure that the board it creates has a unique solution
-*/
-
 int main(int argc, char *argv[]){
     #ifdef MYTEST
     testfunc();
@@ -52,6 +48,8 @@ int main(int argc, char *argv[]){
 
     else if (strcmp("solve", argv[1]) == 0) {
         sudoku_t* new = load_board(stdin);
+        if (new == NULL) return 1;
+
         solve(new);
         printf("solved:\n");
         print_board(new);
@@ -237,7 +235,7 @@ sudoku_t* load_board(FILE *fp){
         for (int j = 0; j < 9; j++){
             int d;
             if (fscanf(fp, "%d ", &d) != 1){
-                fprintf(stderr, "invalid value");
+                fprintf(stderr, "invalid value\n");
                 return NULL;
             }
             else{
