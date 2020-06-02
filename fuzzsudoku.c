@@ -17,6 +17,9 @@
 
 /* Function headers */
 bool isPositiveNumber(char number[]);
+bool compare_boards(sudoku_t* sudo1, sudoku_t* sudo2);
+bool isValidSolution(sudoku_t* sudo);
+void copy_sudoku(sudoku_t* sudo, sudoku_t* copy);
 
 int main(const int argc, char *argv[]) {
     if (argc != 2) {
@@ -87,6 +90,39 @@ int main(const int argc, char *argv[]) {
     }
     return 0;
 }
+
+/***************** compare_boards *****************
+ * caller provides two sudoku structures
+ * returns false if any non-zero numbers differ, true otherwise
+ */
+bool compare_boards(sudoku_t* sudo1, sudoku_t* sudo2) {
+    for (int i = 0; i < 9; i++){
+        for (int j = 0; j < 9; j++){
+            if ((sudo1->board[i][j] != 0) && (sudo2->board[i][j] != 0)) {
+                if ((sudo1->board[i][j]) != (sudo2->board[i][j])) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+
+/***************** isValidSolution *****************
+ * returns true if a completed sudoku board follows the rules of sudoku
+ * caller must pass a completely filled sudoku board
+ */
+bool isValidSolution(sudoku_t* sudo) {
+    for (int i = 0; i < 9; i++){
+        for (int j = 0; j < 9; j++){
+            if (!can_fit(sudo, i, j, sudo->board[i][j])) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 
 /***************** isPositiveNumber *****************
  * takes a char[], returns whether or not it can be converted to an int

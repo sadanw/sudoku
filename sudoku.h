@@ -186,6 +186,12 @@ bool can_fit_square(sudoku_t* sudo, int x, int y, int n);
  */
 void shuffle(int *array, size_t n);
 
+int get_value(sudoku_t* sudo, int x, int y);
+
+void set_value(sudoku_t* sudo, int x, int y, int n);
+
+void copy_sudoku(sudoku_t* sudo, sudoku_t* copy);
+
 /************* delete_sudoku *************/
 /* Frees the memory associated with the given data struct as long as it is
  * not NULL.
@@ -197,20 +203,6 @@ void shuffle(int *array, size_t n);
  * 	freed as long as it is not NULL. 
  */
 void delete_sudoku(sudoku_t* sudo);
-
-void copy_sudoku(sudoku_t* sudo, sudoku_t* copy);
-
-/***************** compare_boards *****************
- * caller provides two sudoku structures
- * returns false if any non-zero numbers differ, true otherwise
- */
-bool compare_boards(sudoku_t* sudo1, sudoku_t* sudo2);
-
-/***************** isValidSolution *****************
- * returns true if a completed sudoku board follows the rules of sudoku
- * caller must pass a completely filled sudoku board
- */
-bool isValidSolution(sudoku_t* sudo);
 
 int testfunc();
 

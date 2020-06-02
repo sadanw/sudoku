@@ -52,8 +52,10 @@ int main(int argc, char *argv[]){
     // makes a new board and prints it to stdout, can then be piped into ./sudoku solve
     if (strcmp("create", argv[1]) == 0) {        
         sudoku_t* new = create();
+        printf("made it here\n");
+
         print_board(new);
-        sudoku_delete(new);
+        delete_sudoku(new);
     }
 
     else if (strcmp("solve", argv[1]) == 0) {
@@ -61,7 +63,7 @@ int main(int argc, char *argv[]){
         solve(new);
         printf("solved:\n");
         print_board(new);
-        sudoku_delete(new);
+        delete_sudoku(new);
     }
 
     else {
@@ -119,7 +121,7 @@ int main(int argc, char *argv[]){
 sudoku_t *sudoku_new(void)
 {
         //allocating memory for the sodoku data struct
-        sudoku_t *sudoku = malloc(sizeof(sudoku_t));
+        sudoku_t *sudoku = (sudoku_t*)malloc(sizeof(sudoku_t));
 
         //returning NULL if there is an error creating the sodoku
         if (sudoku == NULL) {
@@ -128,7 +130,7 @@ sudoku_t *sudoku_new(void)
 
         //otherwise return pointer to new sodoku struct
         else {
-                //looping through the board and initializing all the values to zero
+                // looping through the board and initializing all the values to zero
                 for (int x = 0; x < 9; x++) {
                         for (int y = 0; y < 0; y++) {
                                 sudoku->board[x][y] = 0;
@@ -145,23 +147,31 @@ sudoku_t *sudoku_new(void)
 void fill_square(sudoku_t* sudo, int x, int y)
 {
     int row = x;
+    int col = y;
+    int values[9] = {1,2,3,4,5,6,7,8,9};
+    shuffle(values, 9);
 
     //filling the squares, three rows at a time
     while (row < x + 3) {
-        int col = y;
         //filling the squares, three columns at a time 
         while (col < y + 3) {
-            int num = rand() % 9 + 1; // generate random num and try to insert it
+            for (int n = 0; n <= 8; n++) {
+                if (can_fit(sudo, row, col, values[n])){
+                    sudo->board[x][y] = values[n];
+                    col++;
+                }
+            }
+            // int num = rand() % 9 + 1; // generate random num and try to insert it
 
             //making sure that the random number generated for this square is valid
             //with regards to the square in which it is found 
-            if (can_fit_square(sudo, row, col, num)){
+            // if (can_fit_square(sudo, row, col, num)){
 
                 //if the value is valid, set the square to this value 
-                sudo->board[row][col] = num;
+                // sudo->board[row][col] = num;
 
-                col++; // only move on if the num fits
-            }
+                // col++; // only move on if the num fits
+            // }
         }
         row++;
     }
@@ -428,44 +438,20 @@ void shuffle(int *array, size_t n){
     }
 }
 
+int get_value(sudoku_t* sudo, int x, int y) {
+    return sudo->board[x][y];
+}
+
+void set_value(sudoku_t* sudo, int x, int y, int n) {
+    sudo->board[x][y] = n;
+}
+
 void copy_sudoku(sudoku_t* sudo, sudoku_t* copy) {
     for (int i = 0; i < 9; i++){
         for (int j = 0; j < 9; j++){
             copy->board[i][j] = sudo->board[i][j];
         }
     }
-}
-
-/***************** compare_boards *****************
- * caller provides two sudoku structures
- * returns false if any non-zero numbers differ, true otherwise
- */
-bool compare_boards(sudoku_t* sudo1, sudoku_t* sudo2) {
-    for (int i = 0; i < 9; i++){
-        for (int j = 0; j < 9; j++){
-            if ((sudo1->board[i][j] != 0) && (sudo2->board[i][j] != 0)) {
-                if ((sudo1->board[i][j]) != (sudo2->board[i][j])) {
-                    return false;
-                }
-            }
-        }
-    }
-    return true;
-}
-
-/***************** isValidSolution *****************
- * returns true if a completed sudoku board follows the rules of sudoku
- * caller must pass a completely filled sudoku board
- */
-bool isValidSolution(sudoku_t* sudo) {
-    for (int i = 0; i < 9; i++){
-        for (int j = 0; j < 9; j++){
-            if (!can_fit(sudo, i, j, sudo->board[i][j])) {
-                return false;
-            }
-        }
-    }
-    return true;
 }
 
 /**************** delete_sudoku() *************/
@@ -483,6 +469,7 @@ void delete_sudoku(sudoku_t* sudo)
 	
 	return; 
 }
+
 
 #ifdef MYTEST
 int fullgrid[9][9] = {
@@ -510,7 +497,7 @@ int partialgrid[9][9] = {
 };
 
 int testfunc(){
-    sudoku_t* sudobf = malloc(sizeof(sudoku_t));
+    sudoku_t* sudobf = sudoku_new();
     for (int i = 0; i < 9; i++){
         for (int j = 0; j < 9; j++){
             sudobf->board[i][j] = fullgrid[i][j];

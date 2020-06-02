@@ -34,6 +34,8 @@ sudoku_t* create() {
     //using the time as a seed for rand() function
     srand(time(NULL));
 
+    print_board(new);
+
     //calling sudoku module function, fill_square, on the squares of the board
     //forming a diagonal from the top left corner to the bottom right corner
     fill_square(new, 0, 0);
@@ -49,24 +51,26 @@ sudoku_t* create() {
     // for the board
     remove_num(new, 40);
 
+    printf("after filling new:\n");
+    print_board(new);
+
     // checking for unique solution here
     sudoku_t* check = sudoku_new();
-    for (int i = 0; i < 9; i++){
-        for (int j = 0; j < 9; j++){
-            check->board[i][j] = new->board[i][j];
-        }
-    }
+
+    copy_sudoku(new, check);
     
-    // if more than one solution, try again
     if (uni_solve(check, 0) > 1){
-        free(check);
+        printf("need to generate a new board\n");
+        delete_sudoku(check);
+        printf("deleted check\n");
+        delete_sudoku(new);
+        printf("deleted new\n");
         return create();
     }
 
-    free(check);
+    delete_sudoku(check);
 
     // return created board
     return new;
-
 }
 
