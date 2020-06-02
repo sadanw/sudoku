@@ -11,21 +11,19 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-
-#include "sudoku.h"
-#include "create.h"
-#include "solve.h"
+#include <sudoku.h>
+#include <create.h>
+#include <solve.h>
 
 /********** create **********/
 /* Creates a fully formed sudoku puzzle. Returns NULL if error. 
  * User is responsible for freeing the sudoku struct later or calling
  * sudoku_delete(). */
-sudoku_t* create() {
-    sudoku_t* new = sudoku_new();
+void create(sudoku_t *sudoku) {
 
-    //if new sudoku data struct is NULL,
+    //if given sudoku data struct is NULL,
     //return NULL
-    if (new == NULL) {
+    if (sudoku == NULL) {
         return NULL;
     }
 
@@ -49,24 +47,7 @@ sudoku_t* create() {
     // for the board
     remove_num(new, 40);
 
-    // checking for unique solution here
-    sudoku_t* check = sudoku_new();
-    for (int i = 0; i < 9; i++){
-        for (int j = 0; j < 9; j++){
-            check->board[i][j] = new->board[i][j];
-        }
-    }
-    
-    // if more than one solution, try again
-    if (uni_solve(check, 0) > 1){
-        free(check);
-        return create();
-    }
-
-    free(check);
-
-    // return created board
-    return new;
+    return;
 
 }
 

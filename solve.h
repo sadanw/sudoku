@@ -35,8 +35,5 @@
  */
 bool solve(sudoku_t *sudo);
 
-// check for unique solution
-int uni_solve(sudoku_t* sudo, int sol);
-
 #endif // __SOLVE_H
 

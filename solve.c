@@ -12,10 +12,9 @@
 #include <string.h>
 #include <stdbool.h>
 #include <time.h>
-
-#include "sudoku.h"
-#include "create.h"
-#include "solve.h"
+#include <sudoku.h>
+#include <create.h>
+#include <solve.h>
 
 /************ solve *************/
 /* Given a valid sudoku data struct, solves this table and outputs the 
@@ -62,7 +61,7 @@ bool solve(sudoku_t* sudo)
 
                         //if table is not full, set this space to be 0, so it
                         //is recognized as an empty space 
-                        sudo->board[x][y] = 0;
+                        sudo ->board[x][y] = 0;
                     }
                 }
 
@@ -76,33 +75,4 @@ bool solve(sudoku_t* sudo)
     //if the table is not full, but the function has reached this point, the 
     //given table is not solvable, return false 
     return false;
-}
-
-// check for unique solution
-int uni_solve(sudoku_t* sudo, int sol){
-    if (is_full(sudo)){
-        sol += 1;
-        return sol;
-    }
-
-
-    for (int x = 0; x < 9; x++){
-        for (int y = 0; y < 9; y++){
-            if (sudo->board[x][y] == 0){
-                for (int n = 1; n <= 9; n++) { 
-                    if (can_fit(sudo, x, y, n)) { 
-                        sudo->board[x][y] = n; 
-                        sol = uni_solve(sudo, sol);
-                        sudo->board[x][y] = 0; 
-                    } 
-
-                    if (sol > 1){
-                        return sol;
-                    }
-                } 
-                return sol; 
-            }
-        }
-    }
-    return sol;
 }
