@@ -81,7 +81,7 @@ Solves the puzzle using recursion
 */
 // bool solve(sudoku_t* sudo);
 
-// int uni_solve(sudoku_t* sudo, int sol);
+int uni_solve(sudoku_t* sudo, int sol);
 
 /**************** print_board *************/
 /* Prints the contents of the given sudoku table in a 9x9 format.
@@ -186,11 +186,40 @@ bool can_fit_square(sudoku_t* sudo, int x, int y, int n);
  */
 void shuffle(int *array, size_t n);
 
+/***************** get_value *****************/
+/* Getter function for the value associated with a given x, y coordinate pair.
+ *
+ * User provides: 
+ * 	valid pointer to sudoku data struct and x, y coordinates for a 
+ * 	particular square within the table. 
+ * We return:
+ * 	an integer corresponding to the value found at this coordinate pair. 
+ */
 int get_value(sudoku_t* sudo, int x, int y);
 
-void set_value(sudoku_t* sudo, int x, int y, int n);
+/***************** set_value ******************/
+/* Setter function for the value associated with a given x, y coordinate pair. 
+ *
+ * User provides:
+ * 	valid pointer to sudoku data struct and x, y coordinates for a 
+ * 	particular square within the table.
+ * We return:
+ * 	nothing, but the value has been changed within the table. 
+ */
+ void set_value(sudoku_t* sudo, int x, int y, int n);
 
-void copy_sudoku(sudoku_t* sudo, sudoku_t* copy);
+/************* copy_sudoku ****************/
+/* Function which copies the contents of one sudoku data struct into another.
+ *
+ * User provides:
+ * 	valid pointer to sudoku data struct to be copied, valid pointer to 
+ * 	sudoku data struct into which the contents of the first table will 
+ * 	be copied. 
+ * We return:
+ * 	nothing, but the second sudoku table has been initialized with the 
+ * 	contents of the first table. 
+ */
+ void copy_sudoku(sudoku_t* sudo, sudoku_t* copy);
 
 /************* delete_sudoku *************/
 /* Frees the memory associated with the given data struct as long as it is
@@ -204,6 +233,16 @@ void copy_sudoku(sudoku_t* sudo, sudoku_t* copy);
  */
 void delete_sudoku(sudoku_t* sudo);
 
+/************** testfunc **************/
+/* Performs Macros testing on the program. 
+ *
+ * User provides:
+ * 	nothing. 
+ * We return: 
+ * 	integer indicating whether the test was successful, 0. 
+ */ 
 int testfunc();
+bool bettersolve(sudoku_t* sudo);
+void better_fit(sudoku_t* sudo, int possible_vals[9], int x, int y);
 
 #endif

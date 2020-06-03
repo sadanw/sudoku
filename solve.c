@@ -13,9 +13,10 @@
 #include <stdbool.h>
 #include <time.h>
 
-#include "sudoku.h"
 #include "create.h"
 #include "solve.h"
+#include "sudoku.h"
+
 
 /************ solve *************/
 /* Given a valid sudoku data struct, solves this table and outputs the 
@@ -48,6 +49,7 @@ bool solve(sudoku_t* sudo)
 
                          //if value is valid for all three parameters, set this 
                         //as the value for the empty space
+
                         set_value(sudo, x, y, n);
 
                         //recursively checking if the table is full or if 

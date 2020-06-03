@@ -14,12 +14,15 @@
 
 #include "sudoku.h"
 #include "create.h"
-#include "solve.h"
+#include "solve.h" 
+#include <time.h>
+
 
 /********** create **********/
 /* Creates a fully formed sudoku puzzle. Returns NULL if error. 
  * User is responsible for freeing the sudoku struct later or calling
  * sudoku_delete(). */
+
 sudoku_t* create() {
     sudoku_t* new = sudoku_new();
 
