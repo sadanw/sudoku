@@ -6,20 +6,20 @@ PROG = sudoku
 OBJS = sudoku.o
 
 # testing
-# FUZZ = fuzzsudoku
-# FUZZOBJS = fuzzsudoku.o
+FUZZ = fuzzsudoku
+FUZZOBJS = fuzzsudoku.o
 UNITTEST = -D MYTEST
 
 #rules
 $(PROG): $(OBJS) 
 	$(CC) $(CFLAGS) $^ -o $@
 
-# $(FUZZ): $(FUZZOBJS) 
-	# $(CC) $(CFLAGS) $^ -o $@
+$(FUZZ): $(FUZZOBJS) 
+	$(CC) $(CFLAGS) $^ -o $@
 
 .PHONY: clean sourcelist test
 
-# all: $(PROG) $(FUZZ)
+all: $(PROG) $(FUZZ)
 
 solve: 
 	./$(PROG) solve
@@ -32,7 +32,7 @@ better:
 
 # dependencies
 sudoku.o: sudoku.h solve.h create.h
-# fuzzsudoku.o: solve.h create.h sudoku.h
+fuzzsudoku.o: sudoku.h solve.h create.h
 
 # clean up after our compilation
 clean:

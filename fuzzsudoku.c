@@ -35,7 +35,7 @@ int main(const int argc, char *argv[]) {
     else {
         int numTest = atoi(argv[1]);
         for (int i = 0; i < numTest; i++) {
-            sudoku_t* new = sudoku_new();
+            sudoku_t* new = create();
             int numSolutions = 0;
 
             printf("--------------------------------------------------");
@@ -98,8 +98,8 @@ int main(const int argc, char *argv[]) {
 bool compare_boards(sudoku_t* sudo1, sudoku_t* sudo2) {
     for (int i = 0; i < 9; i++){
         for (int j = 0; j < 9; j++){
-            if ((sudo1->board[i][j] != 0) && (sudo2->board[i][j] != 0)) {
-                if ((sudo1->board[i][j]) != (sudo2->board[i][j])) {
+            if ((get_value(sudo1, i, j) != 0) && (get_value(sudo2, i, j) != 0)) {
+                if ((get_value(sudo1, i, j)) != (get_value(sudo2, i, j))) {
                     return false;
                 }
             }
@@ -115,7 +115,7 @@ bool compare_boards(sudoku_t* sudo1, sudoku_t* sudo2) {
 bool isValidSolution(sudoku_t* sudo) {
     for (int i = 0; i < 9; i++){
         for (int j = 0; j < 9; j++){
-            if (!can_fit(sudo, i, j, sudo->board[i][j])) {
+            if (!can_fit(sudo, i, j, get_value(sudo, i, j))) {
                 return false;
             }
         }
