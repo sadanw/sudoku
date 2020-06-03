@@ -11,9 +11,9 @@
 #include <time.h>
 #include <ctype.h>
 
-#include "solve.h"
-#include "create.h"
-#include "sudoku.h"
+#include "common/solve.h"
+#include "common/create.h"
+#include "common/sudoku.h"
 
 /* Function headers */
 bool isPositiveNumber(char number[]);

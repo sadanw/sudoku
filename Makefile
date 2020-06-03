@@ -4,32 +4,29 @@ CC = gcc
 CFLAGS = -Wall -pedantic -std=c11 -ggdb $(UNITTEST) 
 MAKE = make
 PROG = sudoku
-OBJS = sudoku.o 
+OBJS = sudomain.o
 TEST = testing.sh
+LIBS = common/common.a
 
 # testing
 FUZZ = fuzzsudoku
-FUZZOBJS = fuzzsudoku.o
 UNITTEST = -D MYTEST
-FUZZ = fuzzsudoku
-FUZZOBJS = fuzzsudoku.o solve.o create.o sudoku.o  
+FUZZOBJS = fuzzsudoku.o
 
 .PHONY: clean sourcelist test
 
-
-all: $(PROG) $(FUZZ)
+all: $(FUZZ) $(PROG) 
 
 #rules
-$(PROG): $(OBJS) 
+$(PROG): $(OBJS) $(LIBS)
 	$(CC) $(CFLAGS) $^ -o $@
 
-$(FUZZ): $(FUZZOBJS) 
+$(FUZZ): $(FUZZOBJS)  $(LIBS)
 	$(CC) $(CFLAGS) $^ -o $@
 
 
 .PHONY: clean sourcelist test
 
-all: $(PROG) $(FUZZ)
 
 solve: 
 	./$(PROG) solve
@@ -47,9 +44,8 @@ test:
 	bash -v testing.sh 
 
 # dependencies
-
-sudoku.o: solve.h create.h
-fuzzsudoku.o: sudoku.h solve.h create.h 
+sudomain.o: $(LIBS)
+fuzzsudoku.o: $(LIBS)
 
 
 # clean up after our compilation

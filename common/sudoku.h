@@ -19,6 +19,8 @@ typedef struct sudoku sudoku_t;
 
 /**************** functions ****************/
 
+//int main(int argc, char *argv[]);
+
 /************ sudoku_new *****************/
 /* Create a new (empty) sudoku.
  *
@@ -115,7 +117,7 @@ sudoku_t* load_board(FILE *fp);
  *      boolean indicating if the given sudoku table was full, true, or had 
  *      empty spaces, false. 
  */
-bool is_full(sudoku_t* sudo);
+
 
 /************** can_fit ***************/
 /* Checks if a given value n will fit at position x, y in a sudoku board.
