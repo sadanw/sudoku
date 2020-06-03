@@ -39,6 +39,7 @@
 ```
         ./sudoku create
         ./sudoku solve
+        ./sudoku better
 ```
 # Exit status:
 ```
