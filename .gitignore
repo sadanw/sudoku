@@ -1,3 +1,4 @@
 sudoku
 *.o
 core
+table.txt

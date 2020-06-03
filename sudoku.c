@@ -26,6 +26,7 @@ typedef struct sudoku{
     // int options[9][9][9];
 } sudoku_t;
 
+
 /************* global functions *************/
 /* visible outside this file */
 /* see sodoku.h for comments about exported functions */
@@ -33,9 +34,15 @@ typedef struct sudoku{
 /***************** local functions **************/
 /* not visible outside this file */
 
+/* Function headers */
+
+bool bettersolve(sudoku_t* sudo);
+void better_fit(sudoku_t* sudo, int possible_vals[9], int x, int y);
+
+
 int main(int argc, char *argv[]){
     #ifdef MYTEST
-    testfunc();
+    //testfunc();
     #endif
     
     if (argc != 2){
@@ -53,10 +60,20 @@ int main(int argc, char *argv[]){
 
     else if (strcmp("solve", argv[1]) == 0) {
         sudoku_t* new = load_board(stdin);
+        if (new == NULL) return 1;
         solve(new);
         printf("solved:\n");
         print_board(new);
         delete_sudoku(new);
+    }
+
+    else if (strcmp("better", argv[1]) == 0) {
+        sudoku_t* new = load_board(stdin);
+        if (new == NULL) return 1;
+        bettersolve(new);
+        printf("solved:\n");
+        print_board(new);
+        free(new);
     }
 
     else {
@@ -202,14 +219,19 @@ void print_board(sudoku_t* sudo)
 }
 
 sudoku_t* load_board(FILE *fp){
+
     sudoku_t* new = sudoku_new();
+
     for (int i = 0; i < 9; i++){
         for (int j = 0; j < 9; j++){
+
             int d;
-            if (fscanf(fp, "%d ", &d) != 1){
-                fprintf(stderr, "invalid value");
+            
+            if (fscanf(fp, " %d", &d) != 1){
+                fprintf(stderr, "invalid value\n");
                 return NULL;
             }
+            
             else{
                 new->board[i][j] = d;
             }
@@ -293,6 +315,64 @@ bool can_fit_square(sudoku_t* sudo, int x, int y, int n)
         }
     }
     return true;
+}
+
+bool bettersolve(sudoku_t* sudo){
+    if (is_full(sudo)){
+        return true;
+    }
+
+    for (int x = 0; x < 9; x++){
+        for (int y = 0; y < 9; y++){
+            if (sudo->board[x][y] == 0){
+                int vals [9] = {1, 1, 1, 1, 1, 1, 1, 1, 1};
+                better_fit(sudo, vals, x, y);
+                for (int i = 0; i < 9; i++) { 
+                    if (vals[i] == 1) { 
+                        sudo->board[x][y] = i+1; 
+                        if (bettersolve(sudo)){
+                            return true;
+                        }
+                        sudo->board[x][y] = 0; 
+                    } 
+                } 
+                return false; 
+            }
+        }
+    }
+    return false;
+}
+
+/*
+For the x and y value given, it will update possible_vals 
+so that a 0 means that value cannot be placed, and a 1 means that it can
+NOTE: a value of 1 is associated with index 0 (not 1)
+*/
+void better_fit(sudoku_t* sudo, int possible_vals[9], int x, int y){
+    for (int n = 1; n <= 9; n++){
+        // check columns
+        for (int i = 0; i < 9; i++) {
+            if (sudo->board[x][i] == n){
+                possible_vals[n-1] = 0;
+            }
+        }
+        // check rows
+        for(int i = 0; i < 9; i++){
+            if (sudo->board[i][y] == n){
+                possible_vals[n-1] = 0;
+            }
+        }
+        // check square
+        int xval = (x / 3) * 3;
+        int yval = (y / 3) * 3;
+        for (int i = 0; i < 3; i++){
+            for (int j = 0; j < 3; j++){
+                if (sudo->board[xval + i][yval + j] == n){
+                    possible_vals[n-1] = 0;
+                }
+            }
+        }
+    }
 }
 
 /************ shuffle() ************/
