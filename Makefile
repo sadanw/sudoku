@@ -27,6 +27,9 @@ solve:
 create:
 	./$(PROG) create
 
+better: 
+	./$(PROG) better
+
 # dependencies
 sudoku.o: sudoku.h solve.h create.h
 # fuzzsudoku.o: solve.h create.h sudoku.h
