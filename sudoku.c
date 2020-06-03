@@ -20,12 +20,6 @@
 /****************** file-local global variables **************/
 /* none */
 
-/******************** local types **************/
-// typedef struct square{
-//         int value;      //value the square holds
-//         int options[9]; //list of potential integers that could be the value
-// } square_t;
-
 /***************** global types ****************/
 typedef struct sudoku{
     int board[9][9];    //2D array of all of the squares in the board
@@ -108,22 +102,16 @@ void fill_square(sudoku_t* sudo, int x, int y)
         //filling the squares, three columns at a time 
         while (col < y + 3) {
             for (int n = 0; n <= 8; n++) {
+
+                //making sure that the random number generated for this square is valid
+                //with regards to the square in which it is found 
                 if (can_fit(sudo, row, col, values[n])){
+
+                    //if the value is valid, set the square to this value 
                     sudo->board[x][y] = values[n];
-                    col++;
+                    col++; // only move on if the num fits
                 }
             }
-            // int num = rand() % 9 + 1; // generate random num and try to insert it
-
-            //making sure that the random number generated for this square is valid
-            //with regards to the square in which it is found 
-            // if (can_fit_square(sudo, row, col, num)){
-
-                //if the value is valid, set the square to this value 
-                // sudo->board[row][col] = num;
-
-                // col++; // only move on if the num fits
-            // }
         }
         row++;
     }
@@ -192,60 +180,6 @@ void remove_num(sudoku_t* sudo, int num) {
 
     return;
 }
-
-// bool solve(sudoku_t* sudo){
-//     if (is_full(sudo)){
-//         return true;
-//     }
-
-
-//     for (int x = 0; x < 9; x++){
-//         for (int y = 0; y < 9; y++){
-//             if (sudo->board[x][y] == 0){
-//                 for (int n = 1; n <= 9; n++) { 
-//                     if (can_fit(sudo, x, y, n)) { 
-//                         sudo->board[x][y] = n; 
-//                         if (solve(sudo)){
-//                             return true;
-//                         }
-//                         sudo->board[x][y] = 0; 
-//                     } 
-//                 } 
-//                 return false; 
-//             }
-//         }
-//     }
-//     return false;
-// }
-
-// // check for unique solution
-// int uni_solve(sudoku_t* sudo, int sol){
-//     if (is_full(sudo)){
-//         sol += 1;
-//         return sol;
-//     }
-
-
-//     for (int x = 0; x < 9; x++){
-//         for (int y = 0; y < 9; y++){
-//             if (sudo->board[x][y] == 0){
-//                 for (int n = 1; n <= 9; n++) { 
-//                     if (can_fit(sudo, x, y, n)) { 
-//                         sudo->board[x][y] = n; 
-//                         sol = uni_solve(sudo, sol);
-//                         sudo->board[x][y] = 0; 
-//                     } 
-
-//                     if (sol > 1){
-//                         return sol;
-//                     }
-//                 } 
-//                 return sol; 
-//             }
-//         }
-//     }
-//     return sol;
-// }
 
 /***************** print_board() ****************/
 /* Prints the contents of the given sudoku table in a 9x9 format. */
