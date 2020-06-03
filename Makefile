@@ -16,6 +16,7 @@ FUZZOBJS = fuzzsudoku.o
 .PHONY: clean sourcelist test
 
 all: $(FUZZ) $(PROG) 
+	make -C common
 
 #rules
 $(PROG): $(OBJS) $(LIBS)
