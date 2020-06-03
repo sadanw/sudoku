@@ -12,9 +12,11 @@
 #include <string.h>
 #include <stdbool.h>
 #include <time.h>
+
 #include "create.h"
 #include "solve.h"
 #include "sudoku.h"
+
 
 /************ solve *************/
 /* Given a valid sudoku data struct, solves this table and outputs the 
@@ -47,7 +49,8 @@ bool solve(sudoku_t* sudo)
 
                          //if value is valid for all three parameters, set this 
                         //as the value for the empty space
-                        set_value(sudo, x, y, n); 
+
+                        set_value(sudo, x, y, n);
 
                         //recursively checking if the table is full or if 
                         //the function must continue filling empty spaces
@@ -75,4 +78,34 @@ bool solve(sudoku_t* sudo)
     //if the table is not full, but the function has reached this point, the 
     //given table is not solvable, return false 
     return false;
+}
+
+// check for unique solution
+int uni_solve(sudoku_t* sudo, int sol){
+    if (is_full(sudo)){
+        sol += 1;
+        return sol;
+    }
+
+    int val;
+    for (int x = 0; x < 9; x++){
+        for (int y = 0; y < 9; y++){
+            val = get_value(sudo, x, y);
+            if (val == 0){
+                for (int n = 1; n <= 9; n++) { 
+                    if (can_fit(sudo, x, y, n)) { 
+                        set_value(sudo, x, y, n); 
+                        sol = uni_solve(sudo, sol);
+                        set_value(sudo, x, y, 0); 
+                    } 
+
+                    if (sol > 1){
+                        return sol;
+                    }
+                } 
+                return sol; 
+            }
+        }
+    }
+    return sol;
 }

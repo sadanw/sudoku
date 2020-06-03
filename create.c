@@ -11,23 +11,26 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+
 #include "sudoku.h"
 #include "create.h"
 #include "solve.h" 
 #include <time.h>
 
+
 /********** create **********/
 /* Creates a fully formed sudoku puzzle. Returns NULL if error. 
  * User is responsible for freeing the sudoku struct later or calling
  * sudoku_delete(). */
-sudoku_t* create(void) {
 
-    //if given sudoku data struct is NULL,
+sudoku_t* create() {
+    sudoku_t* new = sudoku_new();
+
+    //if new sudoku data struct is NULL,
     //return NULL
-    //if (sudoku == NULL) {
-      //  return NULL;
-   // }
-    sudoku_t *new = sudoku_new(); 
+    if (new == NULL) {
+        return NULL;
+    }
 
     //uses the computer's internal clock to control the choice of the seed,
     //since time continuously changes, the seed changes
@@ -49,7 +52,20 @@ sudoku_t* create(void) {
     // for the board
     remove_num(new, 40);
 
-    return new;
+    // checking for unique solution here
+    sudoku_t* check = sudoku_new();
 
+    copy_sudoku(new, check);
+    
+    if (uni_solve(check, 0) > 1){
+        delete_sudoku(check);
+        delete_sudoku(new);
+        return create();
+    }
+
+    delete_sudoku(check);
+
+    // return created board
+    return new;
 }
 

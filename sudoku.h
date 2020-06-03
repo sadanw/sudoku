@@ -244,4 +244,5 @@ void delete_sudoku(sudoku_t* sudo);
 int testfunc();
 bool bettersolve(sudoku_t* sudo);
 void better_fit(sudoku_t* sudo, int possible_vals[9], int x, int y);
+
 #endif

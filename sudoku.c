@@ -64,6 +64,7 @@ int main(int argc, char *argv[]){
 	} 
 
 	//printing table to standard out and freeing memory associated with table
+      
         print_board(new);
         delete_sudoku(new);
     }
@@ -82,6 +83,7 @@ int main(int argc, char *argv[]){
         printf("solved:\n");
 	//printing sudoku board
         print_board(new);
+
 	//deleting memory associated with sudoku table 
         delete_sudoku(new);
     }
@@ -111,7 +113,6 @@ int main(int argc, char *argv[]){
     return 0;
 }
 
-
 /******************* sudoku_new() **************/
 /* Create a new (empty) sudoku. Returns pointer to new sodoku, or NULL if 
  * error. */
@@ -139,6 +140,7 @@ void fill_square(sudoku_t* sudo, int x, int y)
 {
     int row = x;
     int col = y;
+
     //creating list of potential values that can be in the table
     int values[9] = {1,2,3,4,5,6,7,8,9};
     //shuffling values within the index so the values are randomly added to 
@@ -253,7 +255,6 @@ void print_board(sudoku_t* sudo)
 /* Loads the contents in a file or from stdin into a valid Sudoku data 
  * struct. */ 
 sudoku_t* load_board(FILE *fp){
-	
     //creating new sudoku data struct
     sudoku_t* new = sudoku_new();
 	
@@ -346,6 +347,7 @@ bool can_fit_row(sudoku_t* sudo, int x, int y, int n){
 /* Checks if a given value, n, is valid for the position at x, y in the 
  * sudoku board. */
 bool can_fit_square(sudoku_t* sudo, int x, int y, int n)
+
 {   
     //creating new variables so that the full 3x3 square can be traversed
     int xval = (x / 3) * 3;
@@ -408,6 +410,7 @@ bool bettersolve(sudoku_t* sudo){
     }
     return false;
 }
+
 
 /************* better_fit *************/
 
@@ -508,7 +511,7 @@ void copy_sudoku(sudoku_t* sudo, sudoku_t* copy) {
 void delete_sudoku(sudoku_t* sudo) 
 {
 	//as long as the given sudoku table is not NULL
-if (sudo != NULL) {
+	if (sudo != NULL) {
 		//freeing the memory associated with given data struct
 		free(sudo); 
 	}

@@ -37,6 +37,7 @@ int main(const int argc, char *argv[]) {
         for (int i = 0; i < numTest; i++) {
             sudoku_t* new = create();
             int numSolutions = 0;
+          
             printf("--------------------------------------------------");
             printf("Generated board #%d: \n", i);
             print_board(new);
