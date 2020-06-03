@@ -1,8 +1,8 @@
 #variables
 CC = gcc
-CFLAGS = -Wall -pedantic -std=c11 -ggdb $(UNITTEST)
+CFLAGS = -Wall -pedantic -std=c11 -ggdb #$(UNITTEST)
 MAKE = make
-PROGS = sudoku
+PROG = sudoku
 OBJS = sudoku.o
 
 # testing
@@ -21,14 +21,14 @@ $(PROG): $(OBJS)
 
 # all: $(PROG) $(FUZZ)
 
-# solve: 
-	# ./$(PROG) solve
+solve: 
+	./$(PROG) solve
 
-# create:
-	# ./$(PROG) create
+create:
+	./$(PROG) create
 
 # dependencies
-sudoku.o: solve.h create.h sudoku.h
+sudoku.o: sudoku.h solve.h create.h
 # fuzzsudoku.o: solve.h create.h sudoku.h
 
 # clean up after our compilation

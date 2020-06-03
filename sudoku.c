@@ -52,7 +52,6 @@ int main(int argc, char *argv[]){
     // makes a new board and prints it to stdout, can then be piped into ./sudoku solve
     if (strcmp("create", argv[1]) == 0) {        
         sudoku_t* new = create();
-        printf("made it here\n");
 
         print_board(new);
         delete_sudoku(new);
@@ -74,70 +73,23 @@ int main(int argc, char *argv[]){
     return 0;
 }
 
-// sudoku_t* create() {
-//     sudoku_t* new = malloc(sizeof(sudoku_t));
-    
-//     if (new == NULL) {
-//         return NULL;
-//     }
-
-//     // fill in diagonals
-//     srand(time(NULL)); // use the time as a seed for rand()
-//     fill_square(new, 0, 0);
-//     fill_square(new, 3, 3);
-//     fill_square(new, 6, 6);
-
-//     // fill in remaining squares
-//     fill_board(new);
-
-//     // remove values
-//     remove_num(new, 40);
-
-
-//     // checking for unique solution here
-//     sudoku_t* check = malloc(sizeof(sudoku_t));
-//     for (int i = 0; i < 9; i++){
-//         for (int j = 0; j < 9; j++){
-//             check->board[i][j] = new->board[i][j];
-//         }
-//     }
-    
-//     // if more than one solution, try again
-//     if (uni_solve(check, 0) > 1){
-//         free(check);
-//         return create();
-//     }
-
-//     free(check);
-
-//     // return created board
-//     return new;
-
-// }
-
 /******************* sudoku_new() **************/
 /* Create a new (empty) sudoku. Returns pointer to new sodoku, or NULL if 
  * error. */
 sudoku_t *sudoku_new(void)
 {
         //allocating memory for the sodoku data struct
-        sudoku_t *sudoku = (sudoku_t*)malloc(sizeof(sudoku_t));
+        sudoku_t *sudoku = calloc(1, sizeof(sudoku_t));
 
         //returning NULL if there is an error creating the sodoku
         if (sudoku == NULL) {
-                return NULL;
+            return NULL;
         }
 
         //otherwise return pointer to new sodoku struct
         else {
-                // looping through the board and initializing all the values to zero
-                for (int x = 0; x < 9; x++) {
-                        for (int y = 0; y < 0; y++) {
-                                sudoku->board[x][y] = 0;
-                        }
-                }
-                //returning point to sudoku data struct 
-                return sudoku;
+            //returning pointer to sudoku data struct 
+            return sudoku;
         }
 }
 
@@ -461,13 +413,10 @@ void delete_sudoku(sudoku_t* sudo)
 {
 	//as long as the given sudoku table is not NULL
 	if (sudo != NULL) {
-		
-		//freeing the memory associated with given data
-		//struct
+		//freeing the memory associated with given data struct
 		free(sudo); 
 	}
 	
-	return; 
 }
 
 
