@@ -1,21 +1,27 @@
 #variables
 
 CC = gcc
-CFLAGS = -Wall -pedantic -std=c11 -ggdb $(UNITTEST)
+CFLAGS = -Wall -pedantic -std=c11 -ggdb $(UNITTEST) 
 MAKE = make
 PROG = sudoku
-
-OBJS = sudoku.o
+OBJS = sudoku.o 
+TEST = testing.sh
 
 # testing
 UNITTEST = -D MYTEST
+FUZZ = fuzzsudoku
+FUZZOBJS = fuzzsudoku.o solve.o create.o sudoku.o  
 
+.PHONY: clean sourcelist test
+
+all: $(PROG) $(FUZZ)
 
 #rules
 $(PROG): $(OBJS) 
 	$(CC) $(CFLAGS) $^ -o $@
 
-.PHONY: clean sourcelist test
+$(FUZZ): $(FUZZOBJS) 
+	$(CC) $(CFLAGS) $^ -o $@
 
 solve: 
 	./$(PROG) solve
@@ -23,8 +29,18 @@ solve:
 create:
 	./$(PROG) create
 
+better: 
+	./$(PROG) better
+
+fuzz:
+	./$(FUZZ) 5   
+
+test:
+	bash -v testing.sh 
+
 # dependencies
 sudoku.o: solve.h create.h
+fuzzsudoku.o: sudoku.h solve.h create.h 
 
 # clean up after our compilation
 clean:
@@ -32,3 +48,4 @@ clean:
 	rm -rf $(PROG)
 	rm -rf *.dSYM
 	rm -rf *core*
+	rm -f test/*

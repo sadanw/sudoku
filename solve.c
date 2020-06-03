@@ -12,9 +12,9 @@
 #include <string.h>
 #include <stdbool.h>
 #include <time.h>
-#include <sudoku.h>
-#include <create.h>
-#include <solve.h>
+#include "create.h"
+#include "solve.h"
+#include "sudoku.h"
 
 /************ solve *************/
 /* Given a valid sudoku data struct, solves this table and outputs the 
@@ -34,7 +34,7 @@ bool solve(sudoku_t* sudo)
 
             //when the value of a square in the board is 0, this signifies
             //an empty space which must be filled/solved 
-            if (sudo->board[x][y] == 0) {
+            if (get_value(sudo, x, y) == 0) {
 
                 //looping through the numbers 1-9 and testing if each option
                 //is valid for the current empty space in the table 
@@ -47,7 +47,7 @@ bool solve(sudoku_t* sudo)
 
                          //if value is valid for all three parameters, set this 
                         //as the value for the empty space
-                        sudo->board[x][y] = n;
+                        set_value(sudo, x, y, n); 
 
                         //recursively checking if the table is full or if 
                         //the function must continue filling empty spaces
@@ -61,7 +61,7 @@ bool solve(sudoku_t* sudo)
 
                         //if table is not full, set this space to be 0, so it
                         //is recognized as an empty space 
-                        sudo ->board[x][y] = 0;
+                        set_value(sudo, x, y, 0);
                     }
                 }
 

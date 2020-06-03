@@ -15,6 +15,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
+#include "sudoku.h"
 
 /**************** functions ***************/
 
@@ -30,7 +31,7 @@
  *      later calling sudoku_delete in order to free the memory associated with
  *      the newly initialized sudoku*.
  */
-sudoku_t* create();
+sudoku_t* create(void);
 
 #endif // __CREATE_H
 
