@@ -2,3 +2,4 @@ sudoku
 *.o
 core
 table.txt
+fuzzsudoku
