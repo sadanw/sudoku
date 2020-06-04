@@ -15,8 +15,12 @@ FUZZOBJS = fuzzsudoku.o
 
 .PHONY: clean sourcelist test
 
-all: $(FUZZ) $(PROG) 
+setup:  
 	make -C common
+
+mains: $(FUZZ) $(PROG)
+
+all: setup mains
 
 #rules
 $(PROG): $(OBJS) $(LIBS)
@@ -57,3 +61,4 @@ clean:
 	rm -rf *.dSYM
 	rm -rf *core*
 	rm -f test/*
+	make -C common clean
