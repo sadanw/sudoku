@@ -11,7 +11,7 @@
 
 int main(int argc, char *argv[]){
     #ifdef MYTEST
-    //testfunc();
+        testfunc();
     #endif
     
     //checking that the correct number of command line arguments was given

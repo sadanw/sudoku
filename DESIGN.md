@@ -23,7 +23,7 @@ Let's look through each.
 
 ### User Interface
 
-UI for command line takes one argument, either create or solve.
+UI for command line takes one argument, either create, solve, or use better solution.
 
 ```
 ./sudoku create
@@ -31,6 +31,10 @@ UI for command line takes one argument, either create or solve.
 
 ```
 ./sudoku solve
+```
+
+```
+./sudoku better
 ```
 
 ### Inputs and outputs
