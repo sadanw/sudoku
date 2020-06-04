@@ -39,13 +39,19 @@
 ```
 	./sudoku create
 	./sudoku solve
+	./sudoku better
 ```
 # Exit status:
 ```
-	0 - no error 
-	1 - incorrect number of arguments give 
-	2 - board given by user did not have a valid solution
-	3 - user entered a command line argument that was not create or solve
+        0 - no error
+        1 - incorrect number of arguments given
+        2 - create module was unable to generate table
+        3 - board given by user did not have a valid solution or was an invalid
+	    table in solve module
+        4 - board given by user was not solvable or was an invalid table in
+	    bettersolve
+        5 - user entered a command line argument that was not create, solve, or 
+	    better
 ```
 # Assumptions:
 ```
@@ -56,4 +62,12 @@
 ```
 	- the program assumes that the user only enters characters in the 
 	  command line arguments
+	- empty spaces must be marked by 0's
+        - if give table which is already invalid, the program will still run, 
+	  finding valid values for the empty spaces present, if valid values are
+	  possible
 ``` 
+# Link:
+```
+https://drive.google.com/drive/u/0/recent?ths=true
+```
