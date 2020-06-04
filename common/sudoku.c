@@ -13,6 +13,7 @@
 #include <stdbool.h>
 #include <time.h>
 
+#include "sudoku.h"
 
 /****************** file-local global variables **************/
 /* none */
@@ -20,7 +21,6 @@
 /***************** global types ****************/
 typedef struct sudoku{
     int board[9][9];    //2D array of all of the squares in the board
-    // int options[9][9][9];
 } sudoku_t;
 
 
@@ -30,18 +30,6 @@ typedef struct sudoku{
 
 /***************** local functions **************/
 /* not visible outside this file */
-
-/* Function headers */
-
-bool bettersolve(sudoku_t* sudo);
-void better_fit(sudoku_t* sudo, int possible_vals[9], int x, int y);
-void shuffle(int *array, size_t n);
-void delete_sudoku(sudoku_t* sudo);
-bool can_fit_square(sudoku_t* sudo, int x, int y, int n);
-bool can_fit_row(sudoku_t* sudo, int x, int y, int n);
-bool can_fit_column(sudoku_t* sudo, int x, int y, int n);
-bool can_fit(sudoku_t* sudo, int x, int y, int n);
-bool is_full(sudoku_t* sudo);
 
 //Main function to parse command line arguments, assure their validity, and 
 //call either the create, solve modules depending on the user's arguments
