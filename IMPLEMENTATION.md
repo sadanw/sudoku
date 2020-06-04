@@ -67,6 +67,7 @@
 	17. delete_sudoku: This function frees the memory associated with 
 			   the given sudoku data struct. 
 	18. testfunc: This function performs macros testing on the program.
+	19. bettersolve: This is a more efficient algorithm for the solve module.
 	
 	Some helper modules were used:
 		1. create: creates a new sudoku data struct, then fills 
@@ -107,11 +108,26 @@
 			   there are empty spaces to be filled 
 		3. if none of the values is valid for a particular square, 
 		   the table is not solvable, return false 
+5. if the user calls bettersolve, call bettersolve function
+        1. bettersolve function in sudoku module
+                1. loops over the table
+                2. calls better_fit which determines of the values that can be 
+		   found in the table, 1-9, which are valid for the particular
+		   position in the table this saves time by determining which 
+		   values do not need to be tested within solve function based on
+		   if they are already present within the row, column,
+                   square
+                3. traverses over list and only tests if the value is valid only if
+		   it is marked as a potential value within the list returned by 
+		   better_fit
+                4. recursively calls itself to find the next empty space
 
 # Error
-	0 - no error
-	1 - incorrect number of command line arguments
-	2 - given sudoku table was not solvable 
-	3 - user entered an argument that was not create or solve 
+        0 - no error
+        1 - incorrect number of command line arguments
+        2 - unable to create sudoku table
+        3 - given sudoku table was invalid or unsolvable in solve module
+        4 - given table was invalid or unsolvable in bettersolve function
+        5 - user entered an argument that was not create or solve
 
 See TESTING.md for example test runs and their output 
